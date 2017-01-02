@@ -16,5 +16,6 @@ cd ReactJS_CodeSchool
 # the following from the repo base directory
 php -S localhost:8000
 
-# You can now go into any of the Levels and load the html files
+# You can now load any of html files from each Level like
+# http://localhost:8000/Level1/index.html
 ```
