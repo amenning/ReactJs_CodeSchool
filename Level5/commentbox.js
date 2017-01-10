@@ -9,10 +9,22 @@ class CommentBox extends React.Component {
 		};
 	}
 	
+	componentWillMount() {
+		_fetchComments();
+	}
+	
+	componentDidMount() {
+		this._timer = setInterval(() => this._fetchComments(), 5000);
+	}
+	
+	componentWillUnmount() {
+		clearInterval(this._timer);
+	}
+	
 	_fetchComments() {
 		jQuery.ajax({
 			method: 'GET',
-			url: '/',
+			url: '/api/comments',
 			success: (comments) => {
 				this.setState({ comments })
 			}
