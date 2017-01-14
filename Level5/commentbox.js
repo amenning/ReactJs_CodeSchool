@@ -37,7 +37,8 @@ class CommentBox extends React.Component {
 				<Comment
 					author={comment.author}
 					body={comment.body}
-					key={comment.id} />
+					key={comment.id}
+					onDelete={this._deleteComment.bind(this)} />
 			);
 		});
 	}
@@ -59,12 +60,26 @@ class CommentBox extends React.Component {
 	}
 	
 	_addComment(author, body) {
-		const comment = {
-			id: this.state.comments.length + 1,
-			author, 
-			body
-		};
-		this.setState({ comments: this.state.comments.concat([comment]) });
+		const comment = { author, body };
+		jQuery.post('/api/comments', { comment })
+			.success(newComment => {
+				this.setState({ comments: this.state.comments.concat([newComment]) });
+			}
+		);
+	}
+
+	_deleteComment(comment) {
+		
+		jQuery.ajax({
+			method: 'DELETE',
+			url: '/api/comments/${comment.id}'
+		});
+		
+		const comments = [...this.state.comments];
+		const commentIndex = comments.indexOf(comment);
+		comments.splice(commentIndex, 1);
+		
+		this.setState({ comments });
 	}
 
 	render () {
